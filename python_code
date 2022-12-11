@@ -1,0 +1,41 @@
+from collections import deque
+
+chess_p = [[(-1,-1) for f in range(0,N)] for i in range(0,N)]
+# function to find the valid neighbors within the board size
+def Neighbors(u):    
+    adj = []
+    for e in [(-2,-1),(-2,1),(2,1),(2,-1),(-1,-2),(1,-2),(-1,2),(1,2)]:        
+        v = (u[0] + e[0], u[1] + e[1])
+        if v[0] >= 0 and v[0] < N and v[1] >= 0 and v[1] < N: adj.append(v)
+    return adj;
+#  function to find the path by using the BFS algorithm 
+def routing(s,t):
+    q = deque()
+    q.append(s)
+    chess_p[s[0]][s[1]] = s 
+    while q:
+        u = q.popleft()
+        if u == t: break
+        for v in Neighbors(u):
+            if chess_p[v[0]][v[1]] == (-1,-1):
+                chess_p[v[0]][v[1]] = u
+                q.append(v)
+
+    path = [(t)]    
+    while t != s:
+        t = chess_p[t[0]][t[1]]
+        path.append(t)
+
+    path.reverse()
+    for i in range(0,len(path)):
+      route.append(chr(path[i][0] + 97) + str(path[i][1]))
+    return route
+#  main to read the inputs and print the path
+if __name__ == '__main__':
+    a,b = input('Enter source and destination ').split()
+    N = 8
+    route = []
+    src = (ord(a[0])-97,int(a[1]))
+    dest = (ord(b[0])-97,int(b[1]))
+    print("Path traversed by the knight is ",
+          routing(src,dest))
